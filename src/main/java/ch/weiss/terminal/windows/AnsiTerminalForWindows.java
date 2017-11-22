@@ -7,7 +7,7 @@ import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.platform.win32.Wincon;
 import com.sun.jna.ptr.IntByReference;
 
-public class VirtualTerminal4Windows
+public class AnsiTerminalForWindows
 {
   private static final int ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004;
 
