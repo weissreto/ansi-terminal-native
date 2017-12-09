@@ -22,6 +22,21 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>ch.weiss.ansi.terminal.for.windows</Automatic-Module-Name>
+              <Built-By>Reto Weiss</Built-By>
+              <Implementation-Title>${project.artifactId}</Implementation-Title>
+              <Implementation-Vendor>Reto Weiss</Implementation-Vendor>
+              <Implementation-Version>${project.version}</Implementation-Version>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
