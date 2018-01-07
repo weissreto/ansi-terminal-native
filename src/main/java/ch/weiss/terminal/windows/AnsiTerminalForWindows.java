@@ -18,6 +18,9 @@ public class AnsiTerminalForWindows
 {
   private static final int UTF_8_CODE_PAGE = 65001;
   private static final int ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004;
+  private static final int ENABLE_LINE_INPUT = 0x0002;
+  private static final int ENABLE_ECHO_INPUT = 0x0004;
+  private static final int ENABLE_LINE_AND_ECHO_INPUT = ENABLE_LINE_INPUT + ENABLE_ECHO_INPUT;
 
   /**
    * Enables the virtual terminal (VT) mode for the windows console. Note that VT
@@ -43,8 +46,45 @@ public class AnsiTerminalForWindows
     {
       return false;
     }
+    
+    if (areBitsSet(dwModeRef.getValue(), ENABLE_VIRTUAL_TERMINAL_PROCESSING))
+    {
+      return true;
+    }
 
-    int dwMode = dwModeRef.getValue() + ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    int dwMode = setBits(dwModeRef.getValue(), ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+    result = windowsConsoleApi.SetConsoleMode(hConsole, dwMode);
+    if (!result)
+    {
+      return false;
+    }
+    return true;
+  }
+
+  public static boolean disableLineAndEchoInput()
+  {
+    checkWindows();
+
+    Wincon windowsConsoleApi = Kernel32.INSTANCE;
+    HANDLE hConsole = windowsConsoleApi.GetStdHandle(Wincon.STD_INPUT_HANDLE);
+    if (hConsole == WinBase.INVALID_HANDLE_VALUE)
+    {
+      return false;
+    }
+
+    IntByReference dwModeRef = new IntByReference();
+    boolean result = windowsConsoleApi.GetConsoleMode(hConsole, dwModeRef);
+    if (!result)
+    {
+      return false;
+    }
+    
+    if (areBitsNotSet(dwModeRef.getValue(), ENABLE_LINE_AND_ECHO_INPUT))
+    {
+      return true;
+    }
+
+    int dwMode = unsetBits(dwModeRef.getValue(), ENABLE_LINE_AND_ECHO_INPUT);
     result = windowsConsoleApi.SetConsoleMode(hConsole, dwMode);
     if (!result)
     {
@@ -94,5 +134,25 @@ public class AnsiTerminalForWindows
     {
       throw new UnsupportedOperationException("AnsiTerminalForWindows is not supported on "+System.getProperty("os.name"));
     }
+  }
+  
+  private static boolean areBitsNotSet(int value, int bitMask)
+  {
+    return !areBitsSet(value, bitMask);
+  }
+
+  private static boolean areBitsSet(int value, int bitMask)
+  {
+    return (value & bitMask) == bitMask;
+  }
+  
+  private static int setBits(int value, int bitMask)
+  {
+    return value | bitMask;
+  }
+  
+  private static int unsetBits(int value, int bitMask)
+  {
+    return value & ~bitMask;
   }
 }
