@@ -1,6 +1,8 @@
-package ch.weiss.terminal.windows;
+package ch.rweiss.terminal.windows;
 
 import java.io.IOException;
+
+import ch.rweiss.terminal.windows.AnsiTerminalForWindows;
 
 public class ManualTestAnsiTerminalForWindows
 {

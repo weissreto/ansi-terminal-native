@@ -5,7 +5,7 @@ Enables ansi escape sequences in the windows console (Windows 10 and later)
 
 ````
     boolean enabled = AnsiTerminalForWindows.enableVirtualTerminalProcessing();
-    if (!enabled)
+    if (enabled)
     {
       System.out.println("\033[31m This text should be in red !!!! \033[0m");
     }

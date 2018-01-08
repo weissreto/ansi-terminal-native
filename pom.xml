@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>ch.weiss</groupId>
+  <groupId>ch.rweiss</groupId>
   <artifactId>ansi-terminal-for-windows</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.3-SNAPSHOT</version>
   <dependencies>
     <dependency>
       <groupId>net.java.dev.jna</groupId>
@@ -28,7 +28,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Automatic-Module-Name>ch.weiss.ansi.terminal.for.windows</Automatic-Module-Name>
+              <Automatic-Module-Name>ch.rweiss.ansi.terminal.for.windows</Automatic-Module-Name>
               <Built-By>Reto Weiss</Built-By>
               <Implementation-Title>${project.artifactId}</Implementation-Title>
               <Implementation-Vendor>Reto Weiss</Implementation-Vendor>

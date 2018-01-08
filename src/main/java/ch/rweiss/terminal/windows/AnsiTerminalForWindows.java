@@ -1,4 +1,4 @@
-package ch.weiss.terminal.windows;
+package ch.rweiss.terminal.windows;
 
 import java.io.BufferedOutputStream;
 import java.io.FileDescriptor;
