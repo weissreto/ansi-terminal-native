@@ -58,7 +58,7 @@ public class ManualTestAnsiTerminalForWindows
   private static void enableUtf8CodePage()
   {
     printTest("Enable Utf8 Code Page");
-    boolean enabled = AnsiTerminalForWindows.enableUtf8CodePage();
+    boolean enabled = AnsiTerminalForWindows.changeToUtf8CodePage();
     if (enabled)
     {
       System.out.println("Utf8 Code Page enabled");
