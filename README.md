@@ -1,5 +1,8 @@
 # ansi-terminal-for-windows
-Enables ansi escape sequences in the windows console (Windows 10 and later)
+Provides classes that allows to modify terminal modes for Windows and Linux:
+- Enables ansi escape sequences in the windows console (Windows 10 and later)
+- Disables line and echo input so that single characters can be read individual from standard IN (Linux, Windows)
+- Change code page of Windows terminal to UTF-8 (Windows)
 
 ## Example
 
