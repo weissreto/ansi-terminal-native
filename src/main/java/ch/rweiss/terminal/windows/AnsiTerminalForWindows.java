@@ -14,20 +14,27 @@ import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.platform.win32.Wincon;
 import com.sun.jna.ptr.IntByReference;
 
+import ch.rweiss.bitset.IntBitSet;
+
+/**
+ * Windows native terminal manipulation functions that allows to write 
+ * better console programs. 
+ * @author Reto Weiss
+ */
 public class AnsiTerminalForWindows
 {
   private static final int UTF_8_CODE_PAGE = 65001;
-  private static final int ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004;
-  private static final int ENABLE_LINE_INPUT = 0x0002;
-  private static final int ENABLE_ECHO_INPUT = 0x0004;
-  private static final int ENABLE_LINE_AND_ECHO_INPUT = ENABLE_LINE_INPUT + ENABLE_ECHO_INPUT;
+  private static final IntBitSet ENABLE_VIRTUAL_TERMINAL_PROCESSING = IntBitSet.fromInt(0x0004);
+  private static final IntBitSet ENABLE_LINE_INPUT = IntBitSet.fromInt(0x0002);
+  private static final IntBitSet ENABLE_ECHO_INPUT = IntBitSet.fromInt(0x0004);
+  private static final IntBitSet ENABLE_LINE_AND_ECHO_INPUT = IntBitSet.EMPTY.add(ENABLE_LINE_INPUT).add(ENABLE_ECHO_INPUT);
 
   /**
-   * Enables the virtual terminal (VT) mode for the windows console. Note that VT
+   * Enables the virtual terminal (VT) mode for the Windows console. Note that VT
    * mode is only supported by newer versions of Windows 10 and later. 
    * For details see here https://docs.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences
-   * @return true if successful, false if OS is not windows or this windows
-   *         version does not yet support VT mode
+   * @return true if successful, false if this Windows version does not yet support VT mode
+   * @throws UnsupportedOperationException if OS is not Windows
    */
   public static boolean enableVirtualTerminalProcessing()
   {
@@ -47,13 +54,14 @@ public class AnsiTerminalForWindows
       return false;
     }
     
-    if (areBitsSet(dwModeRef.getValue(), ENABLE_VIRTUAL_TERMINAL_PROCESSING))
+    IntBitSet originalMode = IntBitSet.fromInt(dwModeRef.getValue());
+    if (originalMode.contains(ENABLE_VIRTUAL_TERMINAL_PROCESSING))
     {
       return true;
     }
 
-    int dwMode = setBits(dwModeRef.getValue(), ENABLE_VIRTUAL_TERMINAL_PROCESSING);
-    result = windowsConsoleApi.SetConsoleMode(hConsole, dwMode);
+    IntBitSet newMode = originalMode.add(ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+    result = windowsConsoleApi.SetConsoleMode(hConsole, newMode.toInt());
     if (!result)
     {
       return false;
@@ -61,6 +69,13 @@ public class AnsiTerminalForWindows
     return true;
   }
 
+  /**
+   * Disables line input and echo of input characters. 
+   * By default only whole lines can be read from standard in ({@link System#in}).
+   * This method allows to read each key pressed on the terminal individual from standard in. 
+   * @return true if successful
+   * @throws UnsupportedOperationException if OS is not Windows
+   */
   public static boolean disableLineAndEchoInput()
   {
     checkWindows();
@@ -79,13 +94,14 @@ public class AnsiTerminalForWindows
       return false;
     }
     
-    if (areBitsNotSet(dwModeRef.getValue(), ENABLE_LINE_AND_ECHO_INPUT))
+    IntBitSet originalMode = IntBitSet.fromInt(dwModeRef.getValue());
+    if (originalMode.doesNotContain(ENABLE_LINE_AND_ECHO_INPUT))
     {
       return true;
     }
 
-    int dwMode = unsetBits(dwModeRef.getValue(), ENABLE_LINE_AND_ECHO_INPUT);
-    result = windowsConsoleApi.SetConsoleMode(hConsole, dwMode);
+    IntBitSet newMode = originalMode.remove(ENABLE_LINE_AND_ECHO_INPUT);
+    result = windowsConsoleApi.SetConsoleMode(hConsole, newMode.toInt());
     if (!result)
     {
       return false;
@@ -93,7 +109,16 @@ public class AnsiTerminalForWindows
     return true;
   }
 
-  public static boolean enableUtf8CodePage()
+  /**
+   * <p>Changes the code page (charset) of the terminal to UTF-8.</p>
+   * <p>By default the Windows terminal works with the standard Windows code page (charset). 
+   * Therefore special Unicode characters that are not supported by the standard code page cannot be used. </p>
+   * <p>By changing to UTF-8 more Unicode characters are support. 
+   * Note, that the supported Unicode characters are depending on the current terminal's font.</p>  
+   * @return true if successful
+   * @throws UnsupportedOperationException if OS is not Windows
+   */
+  public static boolean changeToUtf8CodePage()
   {
     checkWindows();
 
@@ -134,25 +159,5 @@ public class AnsiTerminalForWindows
     {
       throw new UnsupportedOperationException("AnsiTerminalForWindows is not supported on "+System.getProperty("os.name"));
     }
-  }
-  
-  private static boolean areBitsNotSet(int value, int bitMask)
-  {
-    return !areBitsSet(value, bitMask);
-  }
-
-  private static boolean areBitsSet(int value, int bitMask)
-  {
-    return (value & bitMask) == bitMask;
-  }
-  
-  private static int setBits(int value, int bitMask)
-  {
-    return value | bitMask;
-  }
-  
-  private static int unsetBits(int value, int bitMask)
-  {
-    return value & ~bitMask;
   }
 }
