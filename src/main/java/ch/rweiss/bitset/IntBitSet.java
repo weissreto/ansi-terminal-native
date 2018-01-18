@@ -22,34 +22,25 @@ public class IntBitSet
 
   /**
    * @param bitMask
-   * @return none of the given bits must be set
+   * @return true if none of the given bits are set
    */
-  public boolean doesNotContain(IntBitSet bitMask)
+  public boolean containsNoneOf(IntBitSet bitMask)
   {
     return !containsOneOf(bitMask);
   }
 
   /**
    * @param bitMask
-   * @return one of the given bits must not be set
+   * @return true if all of the given bits are set
    */
-  public boolean doesNotContainOneOf(IntBitSet bitMask)
-  {
-    return !contains(bitMask);
-  }
-
-  /**
-   * @param bitMask
-   * @return all of the given bits must be set
-   */
-  public boolean contains(IntBitSet bitMask)
+  public boolean containsAllOf(IntBitSet bitMask)
   {
     return (bits & bitMask.bits) == bitMask.bits;
   }
   
   /**
    * @param bitMask
-   * @return one of the given bits must be set
+   * @return true if one of the given bits is set
    */
   public boolean containsOneOf(IntBitSet bitMask)
   {

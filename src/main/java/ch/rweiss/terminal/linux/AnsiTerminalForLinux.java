@@ -37,21 +37,18 @@ public class AnsiTerminalForLinux
       
       if (!isTerminalAvailable(libC))
       {
-        System.out.println("No terminal");
         return false;
       }
       
       Termios originalTermios = getTerminalAttributes(libC);
       if (originalTermios == null)
       {
-        System.out.println("get");
         return false;
       }
       
       IntBitSet originalMode = IntBitSet.fromInt(originalTermios.c_lflag);
-      if (originalMode.doesNotContain(ICANON_ECHO_ECHONL))
+      if (originalMode.containsNoneOf(ICANON_ECHO_ECHONL))
       {
-        System.out.println("doesNotCntain");
         return true;
       }
       
@@ -61,7 +58,6 @@ public class AnsiTerminalForLinux
       boolean result = setTerminalAttributes(libC, noLineAndEchoInputTermios);
       if (!result)
       {
-        System.out.println("set");
         return false;
       }
       

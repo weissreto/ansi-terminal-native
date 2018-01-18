@@ -55,7 +55,7 @@ public class AnsiTerminalForWindows
     }
     
     IntBitSet originalMode = IntBitSet.fromInt(dwModeRef.getValue());
-    if (originalMode.contains(ENABLE_VIRTUAL_TERMINAL_PROCESSING))
+    if (originalMode.containsAllOf(ENABLE_VIRTUAL_TERMINAL_PROCESSING))
     {
       return true;
     }
@@ -95,7 +95,7 @@ public class AnsiTerminalForWindows
     }
     
     IntBitSet originalMode = IntBitSet.fromInt(dwModeRef.getValue());
-    if (originalMode.doesNotContain(ENABLE_LINE_AND_ECHO_INPUT))
+    if (originalMode.containsNoneOf(ENABLE_LINE_AND_ECHO_INPUT))
     {
       return true;
     }

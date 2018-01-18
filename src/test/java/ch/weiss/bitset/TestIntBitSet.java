@@ -52,15 +52,15 @@ public class TestIntBitSet
   }
   
   @Test
-  public void contains()
+  public void containsAllOf()
   {
     IntBitSet testee = IntBitSet.fromInt(0xF051);
-    assertThat(IntBitSet.EMPTY.contains(IntBitSet.EMPTY)).isTrue();
-    assertThat(testee.contains(IntBitSet.fromInt(0x8001))).isTrue();
-    assertThat(testee.contains(IntBitSet.fromInt(0x8003))).isFalse();
-    assertThat(testee.contains(IntBitSet.fromInt(0x0001))).isTrue();
-    assertThat(testee.contains(IntBitSet.fromInt(0x0003))).isFalse();
-    assertThat(testee.contains(IntBitSet.fromInt(0x0002))).isFalse();
+    assertThat(IntBitSet.EMPTY.containsAllOf(IntBitSet.EMPTY)).isTrue();
+    assertThat(testee.containsAllOf(IntBitSet.fromInt(0x8001))).isTrue();
+    assertThat(testee.containsAllOf(IntBitSet.fromInt(0x8003))).isFalse();
+    assertThat(testee.containsAllOf(IntBitSet.fromInt(0x0001))).isTrue();
+    assertThat(testee.containsAllOf(IntBitSet.fromInt(0x0003))).isFalse();
+    assertThat(testee.containsAllOf(IntBitSet.fromInt(0x0002))).isFalse();
   }
   
   @Test
@@ -76,27 +76,15 @@ public class TestIntBitSet
   }
   
   @Test
-  public void doesNotContain()
+  public void containsNoneOf()
   {
     IntBitSet testee = IntBitSet.fromInt(0xF051);
-    assertThat(IntBitSet.EMPTY.doesNotContain(IntBitSet.EMPTY)).isTrue();
-    assertThat(testee.doesNotContain(IntBitSet.fromInt(0x8001))).isFalse();
-    assertThat(testee.doesNotContain(IntBitSet.fromInt(0x8003))).isFalse();
-    assertThat(testee.doesNotContain(IntBitSet.fromInt(0x0001))).isFalse();
-    assertThat(testee.doesNotContain(IntBitSet.fromInt(0x0003))).isFalse();
-    assertThat(testee.doesNotContain(IntBitSet.fromInt(0x0402))).isTrue();
-  }
-
-  @Test
-  public void doesNotContainOneOf()
-  {
-    IntBitSet testee = IntBitSet.fromInt(0xF051);
-    assertThat(IntBitSet.EMPTY.doesNotContainOneOf(IntBitSet.EMPTY)).isFalse();
-    assertThat(testee.doesNotContainOneOf(IntBitSet.fromInt(0x8001))).isFalse();
-    assertThat(testee.doesNotContainOneOf(IntBitSet.fromInt(0x8003))).isTrue();
-    assertThat(testee.doesNotContainOneOf(IntBitSet.fromInt(0x0001))).isFalse();
-    assertThat(testee.doesNotContainOneOf(IntBitSet.fromInt(0x0003))).isTrue();
-    assertThat(testee.doesNotContainOneOf(IntBitSet.fromInt(0x0402))).isTrue();
+    assertThat(IntBitSet.EMPTY.containsNoneOf(IntBitSet.EMPTY)).isTrue();
+    assertThat(testee.containsNoneOf(IntBitSet.fromInt(0x8001))).isFalse();
+    assertThat(testee.containsNoneOf(IntBitSet.fromInt(0x8003))).isFalse();
+    assertThat(testee.containsNoneOf(IntBitSet.fromInt(0x0001))).isFalse();
+    assertThat(testee.containsNoneOf(IntBitSet.fromInt(0x0003))).isFalse();
+    assertThat(testee.containsNoneOf(IntBitSet.fromInt(0x0402))).isTrue();
   }
   
   @Test
