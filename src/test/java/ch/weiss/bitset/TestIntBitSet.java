@@ -52,6 +52,15 @@ public class TestIntBitSet
   }
   
   @Test
+  public void subSet()
+  {
+    IntBitSet rgb = IntBitSet.fromInt(0x00FF7C39);
+    assertThat(rgb.subSet(0, 7)).isEqualTo(IntBitSet.fromInt(0x39));
+    assertThat(rgb.subSet(8, 15)).isEqualTo(IntBitSet.fromInt(0x7C));
+    assertThat(rgb.subSet(16, 23)).isEqualTo(IntBitSet.fromInt(0xFF));
+  }
+  
+  @Test
   public void containsAllOf()
   {
     IntBitSet testee = IntBitSet.fromInt(0xF051);

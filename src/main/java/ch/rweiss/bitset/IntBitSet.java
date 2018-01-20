@@ -57,6 +57,19 @@ public class IntBitSet
     return new IntBitSet(bits & ~bitMask.bits);
   }
   
+  public IntBitSet subSet(int startBit, int endBit)
+  {
+    int bitMask = 0;
+    for (int bit = startBit; bit <= endBit; bit++)
+    {
+      bitMask += 1 << bit;
+    }
+    int subBits = bits & bitMask;
+    subBits = subBits >> startBit;
+    return new IntBitSet(subBits);
+  }
+
+  
   public int toInt()
   {
     return bits;
