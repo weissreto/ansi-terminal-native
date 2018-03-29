@@ -1,4 +1,5 @@
-# ansi-terminal-for-windows
+# ansi-terminal-for-windows [![Build Status](https://travis-ci.org/weissreto/ansi-terminal-for-windows.svg?branch=master)](https://travis-ci.org/weissreto/ansi-terminal-for-windows)
+
 Provides classes that allows to modify terminal modes for Windows and Linux:
 - Enables ansi escape sequences in the windows console (Windows 10 and later)
 - Disables line and echo input so that single characters can be read individual from standard IN (Linux, Windows)
