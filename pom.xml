@@ -2,8 +2,8 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>ch.rweiss</groupId>
-  <artifactId>ansi-terminal-for-windows</artifactId>
-  <version>0.0.3-SNAPSHOT</version>
+  <artifactId>ansi-terminal-native</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
   
   <properties>
     <junit.engine.version>5.2.0</junit.engine.version>
@@ -64,7 +64,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Automatic-Module-Name>ch.rweiss.ansi.terminal.for.windows</Automatic-Module-Name>
+              <Automatic-Module-Name>ch.rweiss.ansi.terminal.native</Automatic-Module-Name>
               <Built-By>Reto Weiss</Built-By>
               <Implementation-Title>${project.artifactId}</Implementation-Title>
               <Implementation-Vendor>Reto Weiss</Implementation-Vendor>

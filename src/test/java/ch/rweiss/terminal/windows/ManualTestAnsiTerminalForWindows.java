@@ -2,8 +2,6 @@ package ch.rweiss.terminal.windows;
 
 import java.io.IOException;
 
-import ch.rweiss.terminal.windows.AnsiTerminalForWindows;
-
 public class ManualTestAnsiTerminalForWindows
 {
   public static void main(String[] args) throws IOException
