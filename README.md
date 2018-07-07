@@ -19,6 +19,8 @@ else
 }
 ```
 
+![Virtual Terminal Processing](doc/VirtualTerminalProcessing.png)
+
 ## Disable line and echo input
 
 By default line and echo input is enabled for Java. Therefore an application can only read a whole line at once from standard IN after the user entered the line and pressed ENTER.
@@ -44,6 +46,8 @@ else
 }
 ```
 
+![Disabled Line And Echo Input](doc/DisabledLineAndEchoInput.png)
+
 ## Change code page of Windows console to UTF-8 (Windows)
 
 Change the code page of the Windows console to UTF-8 so that non ASCII characters can be printed to the console.
@@ -61,3 +65,5 @@ else
   System.err.println("Utf8 Code Page not enabled!");
 }
 ```
+
+![UTF-8 Code Page](doc/Utf8CodePage.png)
