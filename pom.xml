@@ -87,7 +87,6 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Automatic-Module-Name>ch.rweiss.ansi.terminal.native</Automatic-Module-Name>
               <Built-By>Reto Weiss</Built-By>
               <Implementation-Title>${project.artifactId}</Implementation-Title>
               <Implementation-Vendor>Reto Weiss</Implementation-Vendor>
