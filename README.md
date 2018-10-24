@@ -1,4 +1,4 @@
-# ansi-terminal-for-windows [![Build Status](https://travis-ci.org/weissreto/ansi-terminal-native.svg?branch=master)](https://travis-ci.org/weissreto/ansi-terminal-native)
+# ansi-terminal-native [![Build Status](https://travis-ci.org/weissreto/ansi-terminal-native.svg?branch=master)](https://travis-ci.org/weissreto/ansi-terminal-native)
 
 Provides classes that allows to modify terminal modes for Windows and Linux.
 
