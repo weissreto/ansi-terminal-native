@@ -6,6 +6,7 @@ import com.sun.jna.Platform;
 
 import ch.rweiss.bitset.IntBitSet;
 import ch.rweiss.terminal.linux.LibC.Termios;
+import ch.rweiss.terminal.nativ.NativeTerminalException;
 
 /**
  * Linux native terminal manipulation functions that allows to write 
@@ -24,70 +25,62 @@ public class AnsiTerminalForLinux
    * Disables line input and echo of input characters. 
    * By default only whole lines can be read from standard in ({@link System#in}).
    * This method allows to read each key pressed on the terminal individual from standard in. 
-   * @return true if successful
-   * @throws UnsupportedOperationException if OS is not Linux
+   * @throws NativeTerminalException if disabling fails
    */
-  public static boolean disableLineAndEchoInput()
+  public static void disableLineAndEchoInput() throws NativeTerminalException
   {
     checkLinux();
 
     try
     {
-      LibC libC = Native.loadLibrary(Platform.C_LIBRARY_NAME, LibC.class);
+      LibC libC = Native.load(Platform.C_LIBRARY_NAME, LibC.class);
       
-      if (!isTerminalAvailable(libC))
-      {
-        return false;
-      }
+      checkTerminalAvailable(libC);
       
-      Termios originalTermios = getTerminalAttributes(libC);
-      if (originalTermios == null)
-      {
-        return false;
-      }
-      
+      Termios originalTermios = getTerminalAttributes(libC);      
       IntBitSet originalMode = IntBitSet.fromInt(originalTermios.c_lflag);
       if (originalMode.containsNoneOf(ICANON_ECHO_ECHONL))
       {
-        return true;
+        return;
       }
       
       Termios noLineAndEchoInputTermios = new Termios(originalTermios);
       noLineAndEchoInputTermios.c_lflag = originalMode.remove(ICANON_ECHO_ECHONL).toInt();
-
-      boolean result = setTerminalAttributes(libC, noLineAndEchoInputTermios);
-      if (!result)
-      {
-        return false;
-      }
+      setTerminalAttributes(libC, noLineAndEchoInputTermios);
       
       installShutdownHookToResetTerminalMode(libC, STANDARD_IN_FILE_DESCRIPTOR, originalTermios);
-      return true;
     }
-    catch(@SuppressWarnings("unused") LastErrorException ex)
+    catch(LastErrorException ex)
     {
-      return false;
+      throw new NativeTerminalException("Failed to disable line and echo input", ex);
     }
   }
 
-  private static boolean setTerminalAttributes(LibC libC, Termios noLineAndEchoInputTermios)
+  private static boolean setTerminalAttributes(LibC libC, Termios noLineAndEchoInputTermios) throws NativeTerminalException
   {
     int returnCode = libC.tcsetattr(STANDARD_IN_FILE_DESCRIPTOR, LibC.TCSANOW, noLineAndEchoInputTermios);
+    if (returnCode != 0)
+    {
+      throw new NativeTerminalException("Failed to set terminal console attributes", returnCode);
+    }  
     return returnCode == 0;
   }
 
-  private static boolean isTerminalAvailable(LibC libC)
+  private static void checkTerminalAvailable(LibC libC) throws NativeTerminalException
   {
-    return libC.isatty(STANDARD_IN_FILE_DESCRIPTOR) == 1;
+    if (libC.isatty(STANDARD_IN_FILE_DESCRIPTOR) == 0)
+    {
+      throw new NativeTerminalException("No console terminal available");
+    }
   }
   
-  private static Termios getTerminalAttributes(LibC libC)
+  private static Termios getTerminalAttributes(LibC libC) throws NativeTerminalException
   {
     Termios originalTermios = new Termios();
     int returnCode = libC.tcgetattr(STANDARD_IN_FILE_DESCRIPTOR, originalTermios);
     if (returnCode != 0)
     {
-      return null;
+      throw new NativeTerminalException("Failed to get terminal console attributes", returnCode);
     }
     return originalTermios;
   }
@@ -100,12 +93,12 @@ public class AnsiTerminalForLinux
             () -> libC.tcsetattr(stdInFd, LibC.TCSANOW, originalTermios)));
   }
 
-  private static void checkLinux()
+  private static void checkLinux() throws NativeTerminalException
   {
     if (!Platform.isLinux())
     {
-      throw new UnsupportedOperationException(
-          "AnsiTerminalForLinux is not supported on " + System.getProperty("os.name"));
+      throw new NativeTerminalException(
+          AnsiTerminalForLinux.class.getSimpleName()+" is not supported on " + System.getProperty("os.name"));
     }
   }
 }

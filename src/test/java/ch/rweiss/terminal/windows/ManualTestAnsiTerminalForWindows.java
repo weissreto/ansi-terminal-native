@@ -2,29 +2,31 @@ package ch.rweiss.terminal.windows;
 
 import java.io.IOException;
 
+import ch.rweiss.terminal.nativ.NativeTerminalException;
+
 public class ManualTestAnsiTerminalForWindows
 {
   public static void main(String[] args) throws IOException
   {
     enableVirtualTerminalProcessing();
     disableLineAndEchoInput();
+    enableVirtualTerminalInput();
     enableUtf8CodePage();
   }
 
   private static void enableVirtualTerminalProcessing()
   {
     printTest("Test Enable Virtual Terminal Processing");
-    boolean enabled = AnsiTerminalForWindows.enableVirtualTerminalProcessing();
-    if (enabled)
+    try
     {
+      AnsiTerminalForWindows.enableVirtualTerminalProcessing();
       System.out.println("Virtual Terminal Mode enabled");
       System.out.println();
       System.out.println("\033[32mThis text should be in green !!!! \033[0m");
     }
-    else
+    catch(NativeTerminalException ex)
     {
-      System.err.println("Virtual Terminal Mode not support!");
-      printOsNameAndVersion();
+      printError("Virtual Terminal Mode not support!", ex);
     }
     System.out.println();
   }
@@ -32,9 +34,9 @@ public class ManualTestAnsiTerminalForWindows
   private static void disableLineAndEchoInput() throws IOException
   {
     printTest("Test Disable Line And Echo Input");
-    boolean disabled = AnsiTerminalForWindows.disableLineAndEchoInput();
-    if (disabled)
+    try
     {
+      AnsiTerminalForWindows.disableLineAndEchoInput();
       System.out.println("Line and Echo Input disabled.");
       System.out.println();
       System.out.println("Press keys to test (type x to exit)");
@@ -45,20 +47,41 @@ public class ManualTestAnsiTerminalForWindows
         System.out.println("You pressed key: "+ch);
       } while (ch != 'x');
     }
-    else
+    catch(NativeTerminalException ex)
     {
-      System.err.println("Line and Echo Input not disabled!");
-      printOsNameAndVersion();
+      printError("Line and Echo Input not disabled!", ex);
     }
     System.out.println();
   }
-  
+
+  private static void enableVirtualTerminalInput() throws IOException
+  {
+    printTest("Test Enable Virtual Terminal Input");
+    try
+    {
+      AnsiTerminalForWindows.enableVirtualTerminalInput();
+      System.out.println("Virtual Terminal Input enabled.");
+      System.out.println();
+      System.out.println("Press keys to test (type x to exit)");
+      char ch;
+      do
+      {
+        ch = (char)System.in.read();
+        System.out.println("You pressed key: "+ch);
+      } while (ch != 'x');
+    }
+    catch(NativeTerminalException ex)
+    {
+      printError("Virtual Terminal Input not enabled!", ex);
+    }
+}
+
   private static void enableUtf8CodePage()
   {
     printTest("Enable Utf8 Code Page");
-    boolean enabled = AnsiTerminalForWindows.changeToUtf8CodePage();
-    if (enabled)
+    try
     {
+      AnsiTerminalForWindows.changeToUtf8CodePage();
       System.out.println("Utf8 Code Page enabled");
       System.out.println();
       System.out.println("   00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F");
@@ -88,10 +111,9 @@ public class ManualTestAnsiTerminalForWindows
         System.out.println();
       }
     }
-    else
+    catch(NativeTerminalException ex)
     {
-      System.err.println("Utf8 Code Page not enabled!");
-      printOsNameAndVersion();
+      printError("Utf8 Code Page not enabled!", ex);
     }
   }
 
@@ -99,7 +121,14 @@ public class ManualTestAnsiTerminalForWindows
   {
     System.out.println();
     System.out.println(test);
-    System.out.println();
+    System.out.println("------------------------------------------------");
+  }
+
+  private static void printError(String message, NativeTerminalException ex)
+  {
+    System.err.println(message);
+    printOsNameAndVersion();
+    ex.printStackTrace();
   }
 
   private static void printOsNameAndVersion()

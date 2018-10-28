@@ -2,6 +2,8 @@ package ch.rweiss.terminal.linux;
 
 import java.io.IOException;
 
+import ch.rweiss.terminal.nativ.NativeTerminalException;
+
 public class ManualTestAnsiTerminalForLinux
 {
   public static void main(String[] args) throws IOException
@@ -12,9 +14,9 @@ public class ManualTestAnsiTerminalForLinux
   private static void disableLineAndEchoInput() throws IOException
   {
     printTest("Test Disable Line And Echo Input");
-    boolean disabled = AnsiTerminalForLinux.disableLineAndEchoInput();
-    if (disabled)
+    try
     {
+      AnsiTerminalForLinux.disableLineAndEchoInput();
       System.out.println("Line and Echo Input disabled.");
       System.out.println();
       System.out.println("Press keys to test (type x to exit)");
@@ -25,10 +27,9 @@ public class ManualTestAnsiTerminalForLinux
         System.out.println("You pressed key: "+ch);
       } while (ch != 'x');
     }
-    else
+    catch(NativeTerminalException ex)
     {
-      System.err.println("Line and Echo Input not disabled!");
-      printOsNameAndVersion();
+      printError("Line and Echo Input not disabled!", ex);
     }
     System.out.println();
   }
@@ -38,6 +39,13 @@ public class ManualTestAnsiTerminalForLinux
     System.out.println();
     System.out.println(test);
     System.out.println();
+  }
+  
+  private static void printError(String message, NativeTerminalException ex)
+  {
+    System.err.println(message);
+    printOsNameAndVersion();
+    ex.printStackTrace();
   }
 
   private static void printOsNameAndVersion()
