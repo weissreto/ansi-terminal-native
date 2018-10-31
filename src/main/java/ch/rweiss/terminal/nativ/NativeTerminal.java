@@ -15,10 +15,12 @@ public class NativeTerminal
       NativeTerminalForWindows.enableVirtualTerminalInput();
       NativeTerminalForWindows.disableLineAndEchoInput();
       NativeTerminalForWindows.changeToUtf8CodePage();
+      return;
     }
-    else if (Platform.isLinux())
+    if (Platform.isLinux())
     {
       NativeTerminalForLinux.disableLineAndEchoInput();
+      return;
     }
     throw new NativeTerminalException(
         "Unsupported operating system "+
