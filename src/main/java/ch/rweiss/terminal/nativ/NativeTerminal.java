@@ -2,8 +2,8 @@ package ch.rweiss.terminal.nativ;
 
 import com.sun.jna.Platform;
 
-import ch.rweiss.terminal.linux.AnsiTerminalForLinux;
-import ch.rweiss.terminal.windows.AnsiTerminalForWindows;
+import ch.rweiss.terminal.nativ.linux.NativeTerminalForLinux;
+import ch.rweiss.terminal.nativ.windows.NativeTerminalForWindows;
 
 public class NativeTerminal
 {
@@ -11,14 +11,14 @@ public class NativeTerminal
   {
     if (Platform.isWindows())
     {
-      AnsiTerminalForWindows.enableVirtualTerminalProcessing();
-      AnsiTerminalForWindows.enableVirtualTerminalInput();
-      AnsiTerminalForWindows.disableLineAndEchoInput();
-      AnsiTerminalForWindows.changeToUtf8CodePage();
+      NativeTerminalForWindows.enableVirtualTerminalProcessing();
+      NativeTerminalForWindows.enableVirtualTerminalInput();
+      NativeTerminalForWindows.disableLineAndEchoInput();
+      NativeTerminalForWindows.changeToUtf8CodePage();
     }
     else if (Platform.isLinux())
     {
-      AnsiTerminalForLinux.disableLineAndEchoInput();
+      NativeTerminalForLinux.disableLineAndEchoInput();
     }
     throw new NativeTerminalException(
         "Unsupported operating system "+

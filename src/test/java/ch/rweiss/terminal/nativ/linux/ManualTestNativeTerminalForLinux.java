@@ -1,10 +1,11 @@
-package ch.rweiss.terminal.linux;
+package ch.rweiss.terminal.nativ.linux;
 
 import java.io.IOException;
 
 import ch.rweiss.terminal.nativ.NativeTerminalException;
+import ch.rweiss.terminal.nativ.linux.NativeTerminalForLinux;
 
-public class ManualTestAnsiTerminalForLinux
+public class ManualTestNativeTerminalForLinux
 {
   public static void main(String[] args) throws IOException
   {
@@ -16,7 +17,7 @@ public class ManualTestAnsiTerminalForLinux
     printTest("Test Disable Line And Echo Input");
     try
     {
-      AnsiTerminalForLinux.disableLineAndEchoInput();
+      NativeTerminalForLinux.disableLineAndEchoInput();
       System.out.println("Line and Echo Input disabled.");
       System.out.println();
       System.out.println("Press keys to test (type x to exit)");

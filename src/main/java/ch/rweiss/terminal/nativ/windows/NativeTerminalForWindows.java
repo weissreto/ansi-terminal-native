@@ -1,4 +1,4 @@
-package ch.rweiss.terminal.windows;
+package ch.rweiss.terminal.nativ.windows;
 
 import java.io.BufferedOutputStream;
 import java.io.FileDescriptor;
@@ -19,7 +19,7 @@ import ch.rweiss.terminal.nativ.NativeTerminalException;
  * better console programs. 
  * @author Reto Weiss
  */
-public class AnsiTerminalForWindows
+public class NativeTerminalForWindows
 {
   private static final int UTF_8_CODE_PAGE = 65001;
   private static final IntBitSet ENABLE_VIRTUAL_TERMINAL_PROCESSING = IntBitSet.fromInt(0x0004);
@@ -110,7 +110,7 @@ public class AnsiTerminalForWindows
   {
     if (!Platform.isWindows())
     {
-      throw new NativeTerminalException(AnsiTerminalForWindows.class.getSimpleName()+" is not supported on "+System.getProperty("os.name"));
+      throw new NativeTerminalException(NativeTerminalForWindows.class.getSimpleName()+" is not supported on "+System.getProperty("os.name"));
     }
   }
 }

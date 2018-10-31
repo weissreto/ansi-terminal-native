@@ -1,4 +1,4 @@
-package ch.rweiss.terminal.windows;
+package ch.rweiss.terminal.nativ.windows;
 
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.WinBase;

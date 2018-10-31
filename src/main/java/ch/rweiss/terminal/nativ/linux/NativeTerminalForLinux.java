@@ -1,19 +1,19 @@
-package ch.rweiss.terminal.linux;
+package ch.rweiss.terminal.nativ.linux;
 
 import com.sun.jna.LastErrorException;
 import com.sun.jna.Native;
 import com.sun.jna.Platform;
 
 import ch.rweiss.bitset.IntBitSet;
-import ch.rweiss.terminal.linux.LibC.Termios;
 import ch.rweiss.terminal.nativ.NativeTerminalException;
+import ch.rweiss.terminal.nativ.linux.LibC.Termios;
 
 /**
  * Linux native terminal manipulation functions that allows to write 
  * better console programs. 
  * @author Reto Weiss
  */
-public class AnsiTerminalForLinux
+public class NativeTerminalForLinux
 {
   private static final IntBitSet ICANON = IntBitSet.fromInt(LibC.ICANON);
   private static final IntBitSet ECHO = IntBitSet.fromInt(LibC.ECHO);
@@ -98,7 +98,7 @@ public class AnsiTerminalForLinux
     if (!Platform.isLinux())
     {
       throw new NativeTerminalException(
-          AnsiTerminalForLinux.class.getSimpleName()+" is not supported on " + System.getProperty("os.name"));
+          NativeTerminalForLinux.class.getSimpleName()+" is not supported on " + System.getProperty("os.name"));
     }
   }
 }

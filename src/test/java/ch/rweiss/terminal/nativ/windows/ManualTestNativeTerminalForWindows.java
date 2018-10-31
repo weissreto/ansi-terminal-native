@@ -1,10 +1,11 @@
-package ch.rweiss.terminal.windows;
+package ch.rweiss.terminal.nativ.windows;
 
 import java.io.IOException;
 
 import ch.rweiss.terminal.nativ.NativeTerminalException;
+import ch.rweiss.terminal.nativ.windows.NativeTerminalForWindows;
 
-public class ManualTestAnsiTerminalForWindows
+public class ManualTestNativeTerminalForWindows
 {
   public static void main(String[] args) throws IOException
   {
@@ -19,7 +20,7 @@ public class ManualTestAnsiTerminalForWindows
     printTest("Test Enable Virtual Terminal Processing");
     try
     {
-      AnsiTerminalForWindows.enableVirtualTerminalProcessing();
+      NativeTerminalForWindows.enableVirtualTerminalProcessing();
       System.out.println("Virtual Terminal Mode enabled");
       System.out.println();
       System.out.println("\033[32mThis text should be in green !!!! \033[0m");
@@ -36,7 +37,7 @@ public class ManualTestAnsiTerminalForWindows
     printTest("Test Disable Line And Echo Input");
     try
     {
-      AnsiTerminalForWindows.disableLineAndEchoInput();
+      NativeTerminalForWindows.disableLineAndEchoInput();
       System.out.println("Line and Echo Input disabled.");
       System.out.println();
       System.out.println("Press keys to test (type x to exit)");
@@ -59,7 +60,7 @@ public class ManualTestAnsiTerminalForWindows
     printTest("Test Enable Virtual Terminal Input");
     try
     {
-      AnsiTerminalForWindows.enableVirtualTerminalInput();
+      NativeTerminalForWindows.enableVirtualTerminalInput();
       System.out.println("Virtual Terminal Input enabled.");
       System.out.println();
       System.out.println("Press keys to test (type x to exit)");
@@ -81,7 +82,7 @@ public class ManualTestAnsiTerminalForWindows
     printTest("Enable Utf8 Code Page");
     try
     {
-      AnsiTerminalForWindows.changeToUtf8CodePage();
+      NativeTerminalForWindows.changeToUtf8CodePage();
       System.out.println("Utf8 Code Page enabled");
       System.out.println();
       System.out.println("   00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F");
